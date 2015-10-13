@@ -3,23 +3,18 @@
 #include <cstring>
 #include <cassert>
 
-// A few freebies to get past the first couple of tests.
-// These may need to be modified!
 sfw::string::string(void)
 {
-	// TODO: is this finished?
 	m_data = new  char[m_size = 1]{ '\0' };
 }
 
 sfw::string::~string()
 {
-	// TODO: is this finished?
 	delete[]m_data;
 }
 
 size_t sfw::string::length() const
 {
-	// TODO: is this finished?
 	return strlen(m_data);
 }
 
@@ -62,12 +57,22 @@ sfw::string::string(string && a)
 	m_data = a.m_data;
 	m_size = a.m_size;
 
-	a.m_data = new char[a.m_size = 1]{ '\0' };
+	a.m_data = new  char[a.m_size = 1]{ '\0' };
 }
 
 sfw::string & sfw::string::operator=(const string & a)
 {
-	
+	if (this != &a)
+	{
+		if (m_size < strlen(a.m_data) + 1)
+		{
+			delete m_data;
+			m_size = strlen(a.m_data) + 1;
+			m_data = new  char[m_size];
+			m_data[0] = '\0';
+		}
+		strcpy_s(m_data, m_size, a.m_data);
+	}
 	return *this;
 }
 
@@ -91,25 +96,39 @@ sfw::string & sfw::string::operator=(string && a)
 
 sfw::string & sfw::string::operator=(const char * a)
 {
-	
+	delete[] m_data;
+	if (a != nullptr)
+	{
+		m_size = strlen(a) + 1;
+		m_data = new  char[m_size];
+		m_data[0] = '\0';
+		strcpy_s(m_data, m_size, a);
+	}
 	return *this;
 }
 
 sfw::string & sfw::string::operator+=(const string & a)
 {
-	
+	resize(length() + a.length() + 1);
+	strcat_s(m_data, m_size, a.m_data);
 	return *this;
 }
 
 sfw::string & sfw::string::operator+=(const char * a)
 {
-	
+	if (a != nullptr)
+	{
+		resize(length() + strlen(a) + 1);
+		strcat_s(m_data, m_size, a);
+	}
 	return *this;
 }
 
 sfw::string & sfw::string::operator+=(char a)
 {
-	
+	resize(length() + 2);
+	m_data[m_size - 2] = a;
+	m_data[m_size - 1] = '\0';
 	return *this;
 }
 
@@ -165,19 +184,19 @@ const char * sfw::string::cstring() const
 
 bool sfw::operator<(const string & a, const string & b)
 {
-	if (strcmp(a.cstring, b.cstring) == -1) { return true; }
+	if (strcmp(a.cstring(), b.cstring()) == -1) { return true; }
 	else { return false; }
 }
 
 bool sfw::operator<(const string & a, const char * b)
 {
-	if (strcmp(a.cstring, b) == -1) { return true; }
+	if (strcmp(a.cstring(), b) == -1) { return true; }
 	else { return false; }
 }
 
 bool sfw::operator<(const char * a, const string & b)
 {
-	if (strcmp(a, b.cstring) == -1) { return true; }
+	if (strcmp(a, b.cstring()) == -1) { return true; }
 	else { return false; }
 }
 
@@ -201,19 +220,19 @@ bool sfw::operator<=(const char * a, const string & b)
 
 bool sfw::operator>(const string & a, const string & b)
 {
-	if (strcmp(a.cstring, b.cstring) == 1) { return true; }
+	if (strcmp(a.cstring(), b.cstring()) == 1) { return true; }
 	else { return false; }
 }
 
 bool sfw::operator>(const string & a, const char * b)
 {
-	if (strcmp(a.cstring, b) == 1) { return true; }
+	if (strcmp(a.cstring(), b) == 1) { return true; }
 	else { return false; }
 }
 
 bool sfw::operator>(const char * a, const string & b)
 {
-	if (strcmp(a, b.cstring) == 1) { return true; }
+	if (strcmp(a, b.cstring()) == 1) { return true; }
 	else { return false; }
 }
 
@@ -255,66 +274,74 @@ bool sfw::operator!=(const char * a, const string & b)
 
 bool sfw::operator==(const string & a, const string & b)
 {
-	if (strcmp(a.cstring, b.cstring) == 0) { return true; }
+	if (strcmp(a.cstring(), b.cstring()) == 0) { return true; }
 	else { return false; }
 }
 
 bool sfw::operator==(const string & a, const char * b)
 {
-	if (strcmp(a.cstring, b) == 0) { return true; }
+	if (strcmp(a.cstring(), b) == 0) { return true; }
 	else { return false; }
 }
 
 bool sfw::operator==(const char * a, const string & b)
 {
-	if (strcmp(a, b.cstring) == 0) { return true; }
+	if (strcmp(a, b.cstring()) == 0) { return true; }
 	else { return false; }
 }
 
 sfw::string sfw::operator+(const string & a, const string & b)
 {
-	// TODO:
-	return string();
+	sfw::string temp(a);
+	temp += b;
+	return temp;
 }
 
 sfw::string sfw::operator+(const string & a, const char * b)
 {
-	// TODO:
-	return string();
+	sfw::string temp(a);
+	temp += b;
+	return temp;
 }
 
 sfw::string sfw::operator+(const char * a, const string & b)
 {
-	// TODO:
-	return string();
+	sfw::string temp(a);
+	temp += b;
+	return temp;
 }
 
 sfw::string sfw::operator+(const string & a, char b)
 {
-	// TODO:
-	return string();
+	sfw::string temp(a);
+	temp += b;
+	return temp;
 }
 
 sfw::string sfw::operator+(char a, const string & b)
 {
-	// TODO:
-	return string();
+	sfw::string temp(2);
+	temp[0] = a;
+	temp[1] = '\0';
+	temp += b;
+	return temp;
 }
 
 std::ostream & sfw::operator<<(std::ostream & os, const string & p)
 {
-	// TODO:
+	os << p.cstring();
 	return os;
 }
 
 std::istream & sfw::operator>>(std::istream & is, string & p)
 {
-	// TODO:
+	char temp[100000];
+	is >> temp;
+	p = temp;
 	return is;
 }
 
 const sfw::string sfw::literals::operator""_sfw(const char * a, size_t len)
 {
-	// TODO:
-	return string();
+	return string(a, len + 1);
 }

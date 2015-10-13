@@ -1,50 +1,4 @@
 #pragma once
-/************************************************
-DELETE THIS SECTION BEFORE FINAL SUBMISSION
-
-This is a prototype class that should encapsulate
-dynamic memory management of a character array.
-
-Its functions should seek to take as much advantage
-as possible of the <cstring> standard library.
-strcpy, strcat, and strcmp will be especially useful.
-
-The solutions for each of these functions are
-about 3-5 lines. Remember, these functions may
-be used by each other to greatly reduce the 
-amount of work required (1 line solutions for many!)
-
-Hint: Try implementing the 'resize' first. If you
-keep most all of your dynamic memory management
-to a single function, you can reuse it without
-worrying about memory!
-
-Note: It will be necessary for this class to
-implement the C++ "Rule of 5" AND overload
-stream operators for functionality with cin/cout.
-Don't expect to solve these without research
-or help!
-
-IMPORTANT:
-You should modify this header and implement
-whatever additional functionality you find useful.
-
-Modify this project until it compiles without error.
-When successful, copy the string.h and string.cpp to
-your game project.
-
-YOU MAY CHANGE THE NAMESPACE IF YOU WISH,
-but fix the test-main.
-
-
-Final Hint:
-If you hover-click on a green squiggly and select
-"show potential fixes," one of them says
-"Create definition in <filename>.cpp". You may use this
-to automatically generate the function definitions
-in the source file.
-**************************************************/
-
 
 /*************************************************
 <FILL OUT THIS PORTION AND LEAVE IT IN YOUR FILE>
@@ -155,4 +109,3 @@ namespace sfw
 	std::istream &operator>>(std::istream &is, string& p); //input stream operator
 
 }
-
