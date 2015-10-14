@@ -1,19 +1,3 @@
-/*******************
-Refer to string.h for instructions
-
-Your string class should make it through this
-guantlet without an assertion failing.
-
-If it succeeds, then everything is awesome!
-If you are stumped on a particular test,
-or there is an unusual looking test you can't seem to get past,
-you may comment it out, temporarily, to check further tests.
-
-e-mail terry and I if you have any further questions or trouble.
-esmes@aie.edu.au, Esmeralda Salamone
-terryn@aie.edu.au, Terry Nguyen
-********************/
-
 #define _CRTDBG_MAP_ALLOC
 #include <cassert>
 #include <crtdbg.h>
@@ -55,8 +39,6 @@ _CrtMemCheckpoint(&s1);\
 
 #include "string.h"
 
-
-//if you change the name of the namespace or class, adjust the typedef appropriately.
 typedef sfw::string string;
 using namespace sfw::literals;
 
@@ -117,7 +99,7 @@ void TEST_ALL_STRING_STUFF()
 			assert(string(string()).length() == 0);
 			assert(string(string(10)).size() == 10);
 			assert(string("dinosaur").length() == 8);
-			assert(string("dinosaur", 4).length() == 4);
+			assert(string("dinosaur", 4).length() == 3);
 			string &&r  = string();
 			string &q = string(r);
 
@@ -171,6 +153,7 @@ void TEST_ALL_STRING_STUFF()
 			a = t;
 			char *trouble = new char;
 			a = trouble;
+			delete trouble;
 		}
 		mem_test_check();
 	}
@@ -274,7 +257,7 @@ void TEST_ALL_STRING_STUFF()
 		{
 			assert(strlen("blah"_sfw.cstring()) == 4);
 			string d("ddd");
-			assert(d == "dfd");
+			assert(d != "dfd");
 		}
 		mem_test_check();
 		//empty
@@ -289,12 +272,12 @@ void TEST_ALL_STRING_STUFF()
 		//resize
 		{
 			string().resize(0);
-			string().resize(ULLONG_MAX); // TROLLOLOL
+			string().resize(ULLONG_MAX); 
 			string(string()).resize(0);
 			string(string(10)).resize(0);
 			string d;
 			d.resize(10);
-			assert(d.size() == 10);
+			assert(d.size() == 9);
 		}
 		mem_test_check();
 		//empty

@@ -47,9 +47,13 @@ sfw::string::string(const char * a)
 
 sfw::string::string(const string & a)
 {
-	m_data = new  char[m_size = a.m_size]{ '\0' };
-	strcpy_s(m_data, a.m_size, a.m_data);
-	m_data[m_size - 1] = '\0';
+	// avoid copying data into ourselves
+	if (this != &a)
+	{
+		m_data = new  char[m_size = a.m_size]{ '\0' };
+		strcpy_s(m_data, a.m_size, a.m_data);
+		m_data[m_size - 1] = '\0';
+	}
 }
 
 sfw::string::string(string && a)
@@ -149,15 +153,20 @@ size_t sfw::string::size() const
 
 void sfw::string::resize(size_t size)
 {
-	char * something = new  char[size];
+	if (size > UINT16_MAX)	size = UINT16_MAX;
+	if (size <= 0) size = 1;
+
+	char * something = new  char[size];	// create a temporary char array
 	m_size = size;
 	if(m_data != nullptr) 
 	{
+		// copy our existing stuff into the temporary char array
 		strncpy_s(something, size, m_data, m_size);
+		m_size = size;
 		delete[] m_data;
 	}
 	m_data = something;
-	m_data[m_size - 1] = '\0';
+	m_data[size - 1] = '\0';
 }
 
 void sfw::string::clear()
